@@ -2,8 +2,10 @@ import platform from '../img/platform.png'
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+// canvas.width = window.innerWidth
+// canvas.height = window.innerHeight
+canvas.width = 1024
+canvas.height = 576
 //create gravity to accelerate velocity on axis-y
 const gravity = 0.5
 
@@ -82,7 +84,8 @@ image.src = platform
 const player = new Player()
 // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
-const platforms = [new Platform({x: 200, y: 200, image: image}), new Platform({x: 400, y: 400, image: image})]
+const platforms = [new Platform({x: -1, y: 470, image: image}), 
+    new Platform({x: image.width -3, y: 470, image: image})]
 
 
 const keys = {
@@ -101,7 +104,9 @@ function animate() {
     //using recursive loop to call animate over and over and over again
     requestAnimationFrame(animate)
     //get our context and maintain shape of the rectangle. Its gonna clear our canvas, take everything off it.
-    c.clearRect(0, 0, canvas.width, canvas.height)
+    // c.clearRect(0, 0, canvas.width, canvas.height)
+    c.fillStyle = 'white'
+    c.fillRect(0, 0, canvas.width, canvas.height)
   
     //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
     platforms.forEach(platform => {

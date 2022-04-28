@@ -117,9 +117,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var canvas = document.querySelector('canvas');
-var c = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight; //create gravity to accelerate velocity on axis-y
+var c = canvas.getContext('2d'); // canvas.width = window.innerWidth
+// canvas.height = window.innerHeight
+
+canvas.width = 1024;
+canvas.height = 576; //create gravity to accelerate velocity on axis-y
 
 var gravity = 0.5;
 
@@ -211,12 +213,12 @@ var player = new Player(); // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
 
 var platforms = [new Platform({
-  x: 200,
-  y: 200,
+  x: -1,
+  y: 470,
   image: image
 }), new Platform({
-  x: 400,
-  y: 400,
+  x: image.width - 3,
+  y: 470,
   image: image
 })];
 var keys = {
@@ -232,8 +234,10 @@ var howFarScrollOffset = 0; //Function, animation loop, to get our Player to mov
 function animate() {
   //using recursive loop to call animate over and over and over again
   requestAnimationFrame(animate); //get our context and maintain shape of the rectangle. Its gonna clear our canvas, take everything off it.
+  // c.clearRect(0, 0, canvas.width, canvas.height)
 
-  c.clearRect(0, 0, canvas.width, canvas.height); //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
+  c.fillStyle = 'white';
+  c.fillRect(0, 0, canvas.width, canvas.height); //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
 
   platforms.forEach(function (platform) {
     platform.draw();
