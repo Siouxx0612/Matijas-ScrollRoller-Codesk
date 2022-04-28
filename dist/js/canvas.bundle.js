@@ -176,7 +176,8 @@ var Player = /*#__PURE__*/function () {
 var Platform = /*#__PURE__*/function () {
   function Platform(_ref) {
     var x = _ref.x,
-        y = _ref.y;
+        y = _ref.y,
+        image = _ref.image;
 
     _classCallCheck(this, Platform);
 
@@ -185,31 +186,38 @@ var Platform = /*#__PURE__*/function () {
       //Its the same
       y: y
     };
-    this.width = 200;
-    this.height = 20;
+    this.image = image;
+    this.width = image.width;
+    this.height = image.height;
   }
 
   _createClass(Platform, [{
     key: "draw",
     value: function draw() {
       //draws rectangle like we did with our Player. Create our platform size
-      c.fillStyle = 'blue';
-      c.fillRect(this.position.x, this.position.y, this.width, this.height);
+      // c.fillStyle = 'blue'
+      // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+      //Replace our initial box with an image. 
+      c.drawImage(this.image, this.position.x, this.position.y);
     }
   }]);
 
   return Platform;
 }();
 
+var image = new Image();
+image.src = _img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"];
 var player = new Player(); // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
 
 var platforms = [new Platform({
   x: 200,
-  y: 200
+  y: 200,
+  image: image
 }), new Platform({
   x: 400,
-  y: 400
+  y: 400,
+  image: image
 })];
 var keys = {
   right: {
@@ -225,12 +233,12 @@ function animate() {
   //using recursive loop to call animate over and over and over again
   requestAnimationFrame(animate); //get our context and maintain shape of the rectangle. Its gonna clear our canvas, take everything off it.
 
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  player.update(); //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
+  c.clearRect(0, 0, canvas.width, canvas.height); //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
 
   platforms.forEach(function (platform) {
     platform.draw();
-  }); //Check if the keys are true or false for movement Left or Right
+  });
+  player.update(); //Check if the keys are true or false for movement Left or Right
 
   if (keys.right.pressed && player.position.x < 600) {
     player.velocity.x = 5;
