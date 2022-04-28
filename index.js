@@ -86,6 +86,8 @@ const keys = {
     }
 }
 
+let howFarScrollOffset = 0
+
 //Function, animation loop, to get our Player to move and where we have our changes over time
 function animate() {
     //using recursive loop to call animate over and over and over again
@@ -106,17 +108,23 @@ function animate() {
         player.velocity.x = -5
     } else {
         player.velocity.x = 0
+
         if (keys.right.pressed) {
+            howFarScrollOffset += 5
             platforms.forEach(platform => {
                 platform.position.x -= 5
             })
         }
         else if (keys.left.pressed) {
+            howFarScrollOffset -= 5
             platforms.forEach(platform => {
                 platform.position.x += 5
             })
         }
     }
+    // console.log(howFarScrollOffset)
+
+
     //rectangular coalision detection
     //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
     //is less than the top of our platform
@@ -128,6 +136,12 @@ function animate() {
             player.velocity.y = 0
         }
     })
+
+
+    if(howFarScrollOffset > 2000) {
+        console.log('YOU WIN')
+    }
+
 }
 animate()
 //EventListener for our keys on pres down for Player movment
