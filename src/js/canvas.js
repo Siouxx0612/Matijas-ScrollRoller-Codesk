@@ -1,10 +1,13 @@
 import platform from '../img/platform.png'
+import background from '../img/background.png'
+import hills from '../img/hills.png'
+
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
 // canvas.width = window.innerWidth
 // canvas.height = window.innerHeight
-canvas.width = 1024
+canvas.width = 1400
 canvas.height = 576
 //create gravity to accelerate velocity on axis-y
 const gravity = 0.5
@@ -55,7 +58,7 @@ class Player {
 }
 
 class Platform {
-    constructor({x, y, image}) {
+    constructor({ x, y, image }) {
         this.position = {
             x,
             //Its the same
@@ -65,7 +68,7 @@ class Platform {
         this.width = image.width
         this.height = image.height
 
-        
+
     }
 
     draw() {
@@ -73,20 +76,52 @@ class Platform {
         // c.fillStyle = 'blue'
         // c.fillRect(this.position.x, this.position.y, this.width, this.height)
         //Replace our initial box with an image. 
-        c.drawImage(this.image, this.position.x, this.position.y  )
+        c.drawImage(this.image, this.position.x, this.position.y)
 
     }
 }
+class BackgroundObject {
+    constructor({ x, y, image }) {
+        this.position = {
+            x,
+            //Its the same
+            y: y
+        }
+        this.image = image
+        this.width = image.width
+        this.height = image.height
+    }
 
-const image = new Image()
-image.src = platform
+    draw() {
+        c.drawImage(this.image, this.position.x, this.position.y)
+
+    }
+}
+function createImage(imageSrc) {
+    const image = new Image()
+    image.src = imageSrc
+    return image
+}
+const platformImage = createImage(platform)
 
 const player = new Player()
 // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
-const platforms = [new Platform({x: -1, y: 470, image: image}), 
-    new Platform({x: image.width -3, y: 470, image: image})]
+const platforms = [new Platform({ x: -1, y: 470, image: platformImage }),
+new Platform({ x: platformImage.width - 3, y: 470, image: platformImage })]
 
+const backgroundObjects = [
+    new BackgroundObject({
+        x: -1,
+        y: -1,
+        image: createImage(background)
+    }),
+    new BackgroundObject({
+        x: -1,
+        y: -1,
+        image: createImage(hills)
+    })
+]
 
 const keys = {
     right: {
@@ -107,7 +142,10 @@ function animate() {
     // c.clearRect(0, 0, canvas.width, canvas.height)
     c.fillStyle = 'white'
     c.fillRect(0, 0, canvas.width, canvas.height)
-  
+
+    backgroundObjects.forEach(backgroundObject => {
+        backgroundObject.draw()
+    })
     //loop trough array and select one individual platform in that array. platform, arbitrarily named platform but it makes sence 
     platforms.forEach(platform => {
         platform.draw()
@@ -128,11 +166,17 @@ function animate() {
             platforms.forEach(platform => {
                 platform.position.x -= 5
             })
+            backgroundObjects.forEach(backgroundObject => {
+                backgroundObject.position.x -= 2
+            })
         }
         else if (keys.left.pressed) {
             howFarScrollOffset -= 5
             platforms.forEach(platform => {
                 platform.position.x += 5
+            })
+            backgroundObjects.forEach(backgroundObject => {
+                backgroundObject.position.x += 2
             })
         }
     }
@@ -151,9 +195,9 @@ function animate() {
         }
     })
 
-
-    if(howFarScrollOffset > 2000) {
-        console.log('YOU WIN')
+    let winMsg = document.querySelector("h1")
+    if (howFarScrollOffset > 1000) {
+        winMsg.innerText = "YOU WON"
     }
 
 }
