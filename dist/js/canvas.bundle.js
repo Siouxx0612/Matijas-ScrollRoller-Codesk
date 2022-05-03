@@ -167,7 +167,7 @@ var Player = /*#__PURE__*/function () {
 
     this.velocity = {
       x: 0,
-      y: 5
+      y: 0
     }; //Our Players size
 
     this.width = 30;
@@ -215,7 +215,6 @@ var Platform = /*#__PURE__*/function () {
 
     this.position = {
       x: x,
-      //Its the same
       y: y
     };
     this.image = image;
@@ -283,6 +282,10 @@ var platforms = [new Platform({
   x: platformImage.width - 3,
   y: 470,
   image: platformImage
+}), new Platform({
+  x: 1900,
+  y: 470,
+  image: platformImage
 })];
 var backgroundObjects = [new BackgroundObject({
   x: -1,
@@ -343,9 +346,7 @@ function animate() {
         backgroundObject.position.x += 2;
       });
     }
-  } // console.log(howFarScrollOffset)
-  //rectangular coalision detection
-  //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
+  } //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
   //is less than the top of our platform
 
 

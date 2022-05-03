@@ -11,8 +11,6 @@ canvas.width = 1400
 canvas.height = 576
 //create gravity to accelerate velocity on axis-y
 const gravity = 0.5
-
-
 class Player {
     // our Player starting position
     constructor() {
@@ -23,20 +21,18 @@ class Player {
         //Players velocity
         this.velocity = {
             x: 0,
-            y: 5
+            y: 0
         }
         //Our Players size
         this.width = 30
         this.height = 50
     }
-
     //Method to define our Player and create our object size
     draw() {
         c.fillStyle = 'red'
         //Where is our Player and how big it is
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
-
     //Update our players property over time
     update() {
         //separate how our player looks like from that we are updating
@@ -61,23 +57,18 @@ class Platform {
     constructor({ x, y, image }) {
         this.position = {
             x,
-            //Its the same
             y: y
         }
         this.image = image
         this.width = image.width
         this.height = image.height
-
-
     }
-
     draw() {
         //draws rectangle like we did with our Player. Create our platform size
         // c.fillStyle = 'blue'
         // c.fillRect(this.position.x, this.position.y, this.width, this.height)
         //Replace our initial box with an image. 
         c.drawImage(this.image, this.position.x, this.position.y)
-
     }
 }
 class BackgroundObject {
@@ -103,13 +94,13 @@ function createImage(imageSrc) {
     return image
 }
 const platformImage = createImage(platform)
-
 const player = new Player()
 // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
-const platforms = [new Platform({ x: -1, y: 470, image: platformImage }),
-new Platform({ x: platformImage.width - 3, y: 470, image: platformImage })]
-
+const platforms = [
+    new Platform({ x: -1, y: 470, image: platformImage }),
+    new Platform({ x: platformImage.width - 3, y: 470, image: platformImage }),
+    new Platform({ x: 1900, y: 470, image: platformImage })]
 const backgroundObjects = [
     new BackgroundObject({
         x: -1,
@@ -122,7 +113,6 @@ const backgroundObjects = [
         image: createImage(hills)
     })
 ]
-
 const keys = {
     right: {
         pressed: false
@@ -131,9 +121,7 @@ const keys = {
         pressed: false
     }
 }
-
 let howFarScrollOffset = 0
-
 //Function, animation loop, to get our Player to move and where we have our changes over time
 function animate() {
     //using recursive loop to call animate over and over and over again
@@ -180,10 +168,6 @@ function animate() {
             })
         }
     }
-    // console.log(howFarScrollOffset)
-
-
-    //rectangular coalision detection
     //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
     //is less than the top of our platform
     platforms.forEach(platform => {
@@ -202,9 +186,9 @@ function animate() {
 
 }
 animate()
+
 //EventListener for our keys on pres down for Player movment
 window.addEventListener('keydown', ({ keyCode }) => {
-
     switch (keyCode) {
         case 65:
             console.log('LEFT')
@@ -228,9 +212,7 @@ window.addEventListener('keydown', ({ keyCode }) => {
 
     }
 })
-
 window.addEventListener('keyup', ({ keyCode }) => {
-
     switch (keyCode) {
         case 65:
             console.log('LEFT')
