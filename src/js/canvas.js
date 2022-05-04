@@ -48,8 +48,9 @@ class Player {
         //velocity equal to zero.
         if (this.position.y + this.height + this.velocity.y <= canvas.height)
             this.velocity.y += gravity
-        //as soon as our player croses that line
-        else this.velocity.y = 0
+        //as soon as our player croses that line, hitts the bottom.
+        //Now not relevant, we want the player to fall down and our code is continued on Loose condition
+        // else this.velocity.y = 0
     }
 }
 
@@ -93,15 +94,16 @@ function createImage(imageSrc) {
     image.src = imageSrc
     return image
 }
-const platformImage = createImage(platform)
-const player = new Player()
+let platformImage = createImage(platform)
+let player = new Player()
 // const platform = new Platform()
 //create multiple platforms, and create one platfor in that array
-const platforms = [
+let platforms = [
     new Platform({ x: -1, y: 470, image: platformImage }),
     new Platform({ x: platformImage.width - 3, y: 470, image: platformImage }),
-    new Platform({ x: 1900, y: 470, image: platformImage })]
-const backgroundObjects = [
+    new Platform({ x: platformImage.width * 2 +300, y: 470, image: platformImage }),
+]
+let backgroundObjects = [
     new BackgroundObject({
         x: -1,
         y: -1,
@@ -122,6 +124,33 @@ const keys = {
     }
 }
 let howFarScrollOffset = 0
+
+function restartGame() {
+platformImage = createImage(platform)
+player = new Player()
+// const platform = new Platform()
+//create multiple platforms, and create one platfor in that array
+ platforms = [
+    new Platform({ x: -1, y: 470, image: platformImage }),
+    new Platform({ x: platformImage.width - 3, y: 470, image: platformImage }),
+    new Platform({ x: platformImage.width * 2 +300, y: 470, image: platformImage }),
+]
+backgroundObjects = [
+    new BackgroundObject({
+        x: -1,
+        y: -1,
+        image: createImage(background)
+    }),
+    new BackgroundObject({
+        x: -1,
+        y: -1,
+        image: createImage(hills)
+    })
+]
+
+howFarScrollOffset = 0
+}
+
 //Function, animation loop, to get our Player to move and where we have our changes over time
 function animate() {
     //using recursive loop to call animate over and over and over again
@@ -181,7 +210,12 @@ function animate() {
 
     let winMsg = document.querySelector("h1")
     if (howFarScrollOffset > 1000) {
-        winMsg.innerText = "YOU WON"
+       
+    }
+
+    //LOOSE
+    if(player.position.y > canvas.height) {
+        restartGame()
     }
 
 }
