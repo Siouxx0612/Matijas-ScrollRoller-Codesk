@@ -167,7 +167,7 @@ var Player = /*#__PURE__*/function () {
 
     this.velocity = {
       x: 0,
-      y: 5
+      y: 0
     }; //Our Players size
 
     this.width = 30;
@@ -197,8 +197,9 @@ var Player = /*#__PURE__*/function () {
       //but the second that our player passes the bottom of the screen we want to set its
       //velocity equal to zero.
 
-      if (this.position.y + this.height + this.velocity.y <= canvas.height) this.velocity.y += gravity; //as soon as our player croses that line
-      else this.velocity.y = 0;
+      if (this.position.y + this.height + this.velocity.y <= canvas.height) this.velocity.y += gravity; //as soon as our player croses that line, hitts the bottom.
+      //Now not relevant, we want the player to fall down and our code is continued on Loose condition
+      // else this.velocity.y = 0
     }
   }]);
 
@@ -215,7 +216,6 @@ var Platform = /*#__PURE__*/function () {
 
     this.position = {
       x: x,
-      //Its the same
       y: y
     };
     this.image = image;
@@ -283,6 +283,10 @@ var platforms = [new Platform({
   x: platformImage.width - 3,
   y: 470,
   image: platformImage
+}), new Platform({
+  x: platformImage.width * 2 + 300,
+  y: 470,
+  image: platformImage
 })];
 var backgroundObjects = [new BackgroundObject({
   x: -1,
@@ -301,7 +305,38 @@ var keys = {
     pressed: false
   }
 };
-var howFarScrollOffset = 0; //Function, animation loop, to get our Player to move and where we have our changes over time
+var howFarScrollOffset = 0;
+
+function restartGame() {
+  platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  player = new Player(); // const platform = new Platform()
+  //create multiple platforms, and create one platfor in that array
+
+  platforms = [new Platform({
+    x: -1,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width - 3,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width * 2 + 300,
+    y: 470,
+    image: platformImage
+  })];
+  backgroundObjects = [new BackgroundObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_1__["default"])
+  }), new BackgroundObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_2__["default"])
+  })];
+  howFarScrollOffset = 0;
+} //Function, animation loop, to get our Player to move and where we have our changes over time
+
 
 function animate() {
   //using recursive loop to call animate over and over and over again
@@ -343,9 +378,7 @@ function animate() {
         backgroundObject.position.x += 2;
       });
     }
-  } // console.log(howFarScrollOffset)
-  //rectangular coalision detection
-  //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
+  } //check if our players y position plus height, so the bottom of the player whether or not the bottom of the player
   //is less than the top of our platform
 
 
@@ -356,8 +389,11 @@ function animate() {
   });
   var winMsg = document.querySelector("h1");
 
-  if (howFarScrollOffset > 1000) {
-    winMsg.innerText = "YOU WON";
+  if (howFarScrollOffset > 1000) {} //LOOSE
+
+
+  if (player.position.y > canvas.height) {
+    restartGame();
   }
 }
 
